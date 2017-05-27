@@ -29,19 +29,23 @@ def registerAuthor(db, username, firstname, lastname, address, email, affiliatio
         print("ERROR--We are unable to register and Author with that Username!")
 
 def showStatus(db, username):
-    statusQuery = db.Manuscript.find({"PrimaryAuthorUsername" : "whileminasavage"})
-
+    # statusQuery = db.Manuscript.find({"PrimaryAuthorUsername" : "whileminasavage"}, { "_id": 1, "Status": 1 })
+    statusQuery  = db.Manuscript.aggregate([
+        { "$match" :
+            { "PrimaryAuthorUsername" : "whileminasavage" } },
+        { "$group" : {
+            "_id":"$Status", "count":{ "$sum": 1}
+            }
+        }
+    ])
     print("Below, you will find the number of manuscripts in each phase \nof review (i.e status) that are under your guidance:")
 
     statusRows = ""
     count = 0
-    for row in statusQuery:
-        array = ["{}".format(col) for col in row]
-        print("===========================")
-        print(array)
-        print("===========================")
-        statusRows += array[12] + " " + array [0] + ". "
-        # pprint(row)
+    for query in statusQuery:
+        status = query.get(u'_id')
+        number = query.get(u'count')
+        statusRows += str(number) + " " + status + ". "
         count += 1
     if (count == 0):
         print("You have no manuscripts!")
