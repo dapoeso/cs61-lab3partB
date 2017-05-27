@@ -1,0 +1,19 @@
+{
+  "name": "cs61-lab3partb",
+  "version": "1.0.0",
+  "description": "cs61 frontend mongo database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dapoeso/cs61-lab3partB.git"
+  },
+  "author": "Devina Kumar, Dami Apoeso",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dapoeso/cs61-lab3partB/issues"
+  },
+  "homepage": "https://github.com/dapoeso/cs61-lab3partB#readme"
+}
