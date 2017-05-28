@@ -1,11 +1,11 @@
-# Author.py
-# Author driver for when an author logs in to the system.
+#!/usr/bin/env python
 
 from __future__ import print_function	# print function
 from pprint import pprint
 from pymongo import MongoClient				# mysql functionality
 import sys
 import random
+import shlex
 import time
 from datetime import date, datetime, timedelta
 
@@ -26,13 +26,13 @@ def registerAuthor(db, username, firstname, lastname, address, email, affiliatio
     if (query is not None):
         print("You have succesfully registered as author: " + username + "!")
     else:
-        print("ERROR--We are unable to register and Author with that Username!")
+        print("ERROR--We are unable to register an Author with that Username!")
 
-def showStatus(db, username):
+def showAuthorStatus(db, username):
     # statusQuery = db.Manuscript.find({"PrimaryAuthorUsername" : "whileminasavage"}, { "_id": 1, "Status": 1 })
     statusQuery  = db.Manuscript.aggregate([
         { "$match" :
-            { "PrimaryAuthorUsername" : "whileminasavage" } },
+            { "PrimaryAuthorUsername" : username } },
         { "$group" : {
             "_id":"$Status", "count":{ "$sum": 1}
             }
@@ -43,6 +43,7 @@ def showStatus(db, username):
     statusRows = ""
     count = 0
     for query in statusQuery:
+        print(query)
         status = query.get(u'_id')
         number = query.get(u'count')
         statusRows += str(number) + " " + status + ". "
