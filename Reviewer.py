@@ -133,7 +133,10 @@ def showReviewerStatus(db, username):
         {"order": 1},
     },
     {"$group":
-        {"_id": "$Status", "count":{"$sum": 1}},
+        {"_id": "$Status", "count":{"$sum": 1}, "neworder": {"$push": "$order"}},
+    },
+    {"$sort":
+        {"neworder": 1},
     }
     ])
 
@@ -218,11 +221,23 @@ def reviewManuscript(db, username, input):
     else:
         print("The action must be either accept or reject.")
         return
-    manuscript = int(input[2])
+    manuscript = input[2]
     appropriateness = int(input[3])
     clarity = int(input[4])
     methodology = int(input[5])
     fieldContribution = int(input[6])
+    if appropriateness not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        print("All scores must be whole numbers between 1 and 10.")
+        return
+    if clarity not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        print("All scores must be whole numbers between 1 and 10.")
+        return
+    if methodology not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        print("All scores must be whole numbers between 1 and 10.")
+        return
+    if fieldContribution not in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+        print("All scores must be whole numbers between 1 and 10.")
+        return
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # print(timestamp)
     isAssigned = db.Review.find_one({"ManuscriptId": manuscript, "ReviewerUsername": username})

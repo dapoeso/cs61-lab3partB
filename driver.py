@@ -75,6 +75,54 @@ while loop:
                 print("You must be a reviewer to review a manuscript.")
         else:
             print("Please log in to review a manuscript.")
+    if (textArray[0] == "assign"):
+        if currentUser is not None:
+            if currentUserType == "Editor":
+                assignManuscript(db, currentUser, textArray)
+            else:
+                print("You must be an editor to assign a manuscript.")
+        else:
+            print("Please log in to assign a manuscript.")
+    if (textArray[0] == "reject"):
+        if currentUser is not None:
+            if currentUserType == "Editor":
+                rejectManuscript(db, currentUser, textArray)
+            else:
+                print("You must be an editor to reject a manuscript.")
+        else:
+            print("Please log in to reject a manuscript.")
+    if (textArray[0] == "accept"):
+        if currentUser is not None:
+            if currentUserType == "Editor":
+                acceptManuscript(db, currentUser, textArray)
+            else:
+                print("You must be an editor to accept a manuscript.")
+        else:
+            print("Please log in to accept a manuscript.")
+    if (textArray[0] == "typeset"):
+        if currentUser is not None:
+            if currentUserType == "Editor":
+                typesetManuscript(db, currentUser, textArray)
+            else:
+                print("You must be an editor to typeset a manuscript.")
+        else:
+            print("Please log in to typeset a manuscript.")
+    if (textArray[0] == "schedule"):
+        if currentUser is not None:
+            if currentUserType == "Editor":
+                scheduleManuscript(db, currentUser, textArray)
+            else:
+                print("You must be an editor to schedule a manuscript.")
+        else:
+            print("Please log in to schedule a manuscript.")
+    if (textArray[0] == "publish"):
+        if currentUser is not None:
+            if currentUserType == "Editor":
+                publishJournal(db, textArray)
+            else:
+                print("You must be an editor to publish a journal.")
+        else:
+            print("Please log in to publish a journal.")
     if (textArray[0] == "retire"):
         if currentUser is not None and currentUserType == "Reviewer":
             retireReviewer(db, currentUser)
@@ -102,7 +150,8 @@ while loop:
     		# else:
 			# 	print("ERROR: Must register reviewer with 1-3 RI Codes")
     if (textArray[0] == "logout"):
-        print("Logging out " + currentUser)
+        if currentUser is not None:
+            print("Logging out " + currentUser)
         currentUser = None
         currentUserType = None
     if (textArray[0] == "exit"):
