@@ -28,8 +28,6 @@ def registerEditor(db, input):
     if usernameExists:
         print("Sorry, but this username has been taken already.  Please try another one.")
         return
-    else:
-        print("Yay!")
     result = db.Editor.insert_one({"Username": username, "FirstName": fname, "LastName": lname})
     print(result.inserted_id)
     test = db.Editor.find_one({"Username": username})
@@ -174,7 +172,7 @@ def assignManuscript(db, username, input):
     if len(input) != 3:
         print("This query is incorrectly formatted.  The form is the following: assign <manuscriptID> <reviewerUsername>")
         return
-    manuscript = input[1]
+    manuscript = int(input[1])
     reviewerUsername = input[2]
 
     # check if editor is assigned manuscript and if it is either under review or received; save the RI code
@@ -201,13 +199,13 @@ def assignManuscript(db, username, input):
     # if this passes all tests, create a new review with null fields
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     newReview = db.Review.insert_one({"ManuscriptId": manuscript, "ReviewerUsername": reviewerUsername, "Appropriateness": None, "Clarity": None, "Methodology": None, "ContributionField": None, "Recommendation": None, "DateSent": timestamp, "DateCompleted": None})
-    print(newReview.inserted_id)
+    # print(newReview.inserted_id)
 
 def rejectManuscript(db, username, input):
     if len(input) != 2:
         print("The query must be formatted like this: reject <manuscriptId>")
         return
-    manuscript = input[1]
+    manuscript = int(input[1])
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     isAssigned = db.Manuscript.find_one_and_update({"_id": manuscript, "EditorUsername": username, "Status": {"$in": ["Received", "Under Review"]}}, {"$set": {"Status": "Rejected", "DateAcceptReject": timestamp}}, return_document=ReturnDocument.AFTER)
     if not isAssigned:
@@ -218,7 +216,7 @@ def acceptManuscript(db, username, input):
     if len(input) != 2:
         print("The query must be formatted like this: accept <manuscriptId>")
         return
-    manuscript = input[1]
+    manuscript = int(input[1])
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     validReviews = db.Review.aggregate([
         {"$match":{"ManuscriptId": manuscript, "DateCompleted": {"$nin":[None]}}},
@@ -242,7 +240,7 @@ def typesetManuscript(db, username, input):
     if len(input) != 3:
         print("The query must be formatted like this: typeset <manuscriptId> <pagesOccupied>")
         return
-    manuscript = input[1]
+    manuscript = int(input[1])
     pages = int(input[2])
     isAssigned = db.Manuscript.find_one_and_update({"_id": manuscript, "EditorUsername": username, "Status": {"$in": ["Accepted"]}}, {"$set": {"Status": "Typeset", "PagesOccupied": pages}}, return_document=ReturnDocument.AFTER)
     if not isAssigned:
@@ -253,7 +251,7 @@ def typesetManuscript(db, username, input):
 def scheduleManuscript(db, username, input):
     if len(input) != 4:
         print("The query must be formatted like this: schedule <manuscriptId> <year> <period>")
-    manuscript = input[1]
+    manuscript = int(input[1])
     year = int(input[2])
     if year < 2017:
         print("Year is too far in the past.  Please use years 2017 and ahead.")
@@ -297,7 +295,7 @@ def scheduleManuscript(db, username, input):
     # check if editor is assigned and if it has been typeset
     assignSchedule = db.Manuscript.find_one_and_update({"_id": manuscript, "EditorUsername": username, "Status": {"$in": ["Typeset"]}}, {"$set": {"Status": "Scheduled", "JournalIssueYear": year, "JournalIssuePeriod": period}}, return_document=ReturnDocument.AFTER)
     if assignSchedule:
-        print(assignSchedule)
+        print("Scheduled")
 
 def publishJournal(db, input):
     if len(input) != 3:

@@ -31,7 +31,7 @@ def registerReviewer(db, input):
         print("Please format your query correctly. You may have included too many or too few RI codes (1 minimum, 3 maximum).")
         return
     # print(input)
-    print(fname, lname)
+    # print(fname, lname)
 
     # check if the reviewer username is already in the database; if not, create a new reviewer
     usernameExists = db.Reviewer.find_one({"Username": username})
@@ -39,11 +39,11 @@ def registerReviewer(db, input):
         print("Sorry, but this username has been taken already.  Please try another one.")
         return
     else:
-        print("Yay!")
+        print("Setting up username")
     result = db.Reviewer.insert_one({"Username": username, "FirstName": fname, "LastName": lname, "Email": email, "Affiliation": affiliation, "Retired": retired})
     print(result.inserted_id)
     test = db.Reviewer.find_one({"Username": username})
-    print(test)
+    # print(test)
     # add all of the RI codes that correspond to the reviewer
     for x in range(0, riCodes):
         insertRI(db, username, int(input[7+x]))
@@ -79,7 +79,7 @@ def loginReviewer(db, username):
 
 def retireReviewer(db, username):
     newReview = db.Reviewer.find_one_and_update({"Username": username}, {"$set": {"Retired": True}}, return_document=ReturnDocument.AFTER)
-    print(newReview)
+    # print(newReview)
     print("Thank you for your service.")
 
 def showReviewerStatus(db, username):
@@ -212,7 +212,7 @@ def reviewManuscript(db, username, input):
     clarity = None
     methodology = None
     fieldContribution = None
-    print(len(input))
+    # print(len(input))
     if len(input) != 7:
         print("This review must be formatted like this:\nreview <action> <manuscriptID> <appropriateness> <clarity> <methodology> <fieldContribution>")
         return
@@ -221,7 +221,7 @@ def reviewManuscript(db, username, input):
     else:
         print("The action must be either accept or reject.")
         return
-    manuscript = input[2]
+    manuscript = int(input[2])
     appropriateness = int(input[3])
     clarity = int(input[4])
     methodology = int(input[5])
@@ -243,11 +243,11 @@ def reviewManuscript(db, username, input):
     isAssigned = db.Review.find_one({"ManuscriptId": manuscript, "ReviewerUsername": username})
     if isAssigned:
         isUnderReview = db.Manuscript.find_one({"_id": manuscript, "Status": "Under Review"})
-        print(isUnderReview)
+        # print(isUnderReview)
         if isUnderReview:
             print("doing the review!")
             newReview = db.Review.find_one_and_update({"ManuscriptId": manuscript, "ReviewerUsername": username}, {"$set": {"Appropriateness": appropriateness, "Clarity": clarity, "Methodology": methodology, "ContributionField": fieldContribution, "Recommendation": action, "DateCompleted": timestamp}}, return_document=ReturnDocument.AFTER)
-            print(newReview)
+            # print(newReview)
         else:
             print("This manuscript is not under review at the moment.")
             return
