@@ -26,7 +26,7 @@ QUIT: A user may quit out of the program at any time using the following command
 REGISTER: A user may register an author using the following command:
 
 
-```register author [username] [fname] [lname] [email] “[mailing address]” "[affiliation]"```
+```register author [username] [fname] [lname] [email] "[mailing address]" "[affiliation]"```
 
 
 LOGIN: A user may login to an author account using the following command:
