@@ -139,7 +139,7 @@ REGISTER: This command registers a reviewer.  We collect information about a rev
 RESIGN: This command resigns a reviewer.  This command updates the Retired field of a user, and thanks the user, and logs out the user.  The reviews that a resigned reviewer has not completed will not appear in the tallies for valid reviews to determine manuscript approval.  In addition, the user will not be able to login after resigning.  A reviewer may resign using the following command:
 
 
-```resign```
+```retire```
 
 
 LOGIN: A user may login to a reviewer account using the following command:
@@ -224,3 +224,175 @@ Log out: ```logout```
 
 #### Publish a manuscript
 Now, to test the editor functions, let us go through the process of publishing a manuscript, from beginning to end.
+
+Log in to azizansari's account: ```login editor azizansari```
+
+You should be able to see the number of manuscripts in each stage (the status command).  Now, use the list command to see a more detailed overview of the manuscripts associated with this editor: ```list```
+
+We should see a manuscript called "Hog and Pig" with an ID of 1.  Let us try assigning this manuscript to a reviewer whose username is omarbennett: ```assign 1 omarbennett```
+
+The system should tell us that we cannot assign this manuscript to omarbennett because he does not have an RI code that matches the RI code of this manuscript.
+
+Now, let us try assigning a manuscript that is not ours to assign: ```assign 5 omarbennett```
+
+The system should say that we do not have the power to do this because the manuscript is either not ours or is past the review stage.
+
+Now, let us try to accept manuscript 1: ```accept 1```
+
+The system should tell us that there must be 3 completed reviews before we can accept the manuscript.
+
+Let us assign 3 reviewers to review this manuscript:
+
+```assign 1 reaganmcknight```
+
+```assign 1 kevinfrazier```
+
+```assign 1 amalwaters```
+
+Let us try to assign the manuscript to one of the people twice: ```assign 1 reaganmcknight```
+
+The system should say that the reviewer has already been assigned the manuscript.
+
+Now, let us check the status of our editor: ```status```
+
+Let us check the list of our editor: ```list```
+
+We should see that the ```status``` command outputs one more manuscript as being under review, and the ```list``` command shows that manuscript 1 is now "Under Review."
+
+Let us logout of this editor's account: ```logout```
+
+
+#### Review a manuscript
+Log in to reviewer reaganmcknight's account: ```login reviewer reaganmcknight```
+
+Check the detailed list of her assigned reviews: ```list```
+
+We should see manuscript 1.  Let us review manuscript 1: ```review accept 1 9 9 9 9```
+
+Let us try reviewing a manuscript that is not reaganmcknight's: ```review accept 7 9 9 9 9```
+
+The system should tell us that we have not been assigned to this manuscript.
+
+Let us also try reviewing a manuscript that is not under review: ```review accept 4 9 9 9 9```
+
+The system should tell us that this manuscript is not under review at the moment.
+
+Let us now log out of reaganmcknight's account: ```logout```
+
+Please log in to kevinfrazier's account: ```login reviewer kevinfrazier```
+
+Check the detailed list of his assigned reviews: ```list```
+
+We should see manuscript 1.  Let us review manuscript 1: ```review accept 1 8 8 9 7```
+
+Let us now log out of kevinfrazier's account: ```logout```
+
+Please log in to amalwaters's account: ```login reviewer amalwaters```
+
+Check the detailed list of her assigned reviews: ```list```
+
+We should see manuscript 1.  Let us review manuscript 1: ```review accept 1 7 8 9 7```
+
+Let us now log out of amalwaters's account: ```logout```
+
+
+#### Publish a manuscript (cont.)
+Now, let us go back to the editor commands.  Please log in to azizansari's account: ```login editor azizansari```
+
+Let us accept manuscript 1: ```accept 1```
+
+If we use the list command, we can see that the status has changed: ```list```
+
+We can also use the status command: ```status```
+
+Let us reject one of the other manuscripts: ```reject 7```
+
+Once again, if we use the list command, we can see that the status has changed: ```list```
+
+We can also use the status command: ```status```
+
+Let us now try typesetting the manuscript to 20 pages: ```typeset 1 20```
+
+Once again, if we use the list command, we can see that the status has changed: ```list```
+
+We can also use the status command: ```status```
+
+Let us try typesetting a manuscript under review: ```typeset 3 2```
+
+The system should tell us that the manuscript is not in the appropriate stage to be typeset or that the editor is not associated with the manuscript.
+
+Let us now try scheduling our manuscript: ```schedule 1 2017 1```
+
+The system should tell us that this would exceed the page limit.
+
+Let us now try scheduling our manuscript for a different issue: ``schedule 1 2017 3```
+
+Once again, if we use the list command, we can see that the status has changed: ```list```
+
+We can also use the status command: ```status```
+
+Now, let us finally publish the journal: ```publish 2017 3```
+
+Once again, if we use the list command, we can see that the status has changed: ```list```
+
+We can also use the status command: ```status```
+
+Let us try rejecting a published manuscript: ```reject 1```
+
+The system should tell us that this is not possible because the editor is either not associated or because the manuscript is beyond rejection.
+
+Let us now log out of the editor account: ```logout```
+
+Let us log back in to a reviewer's account to see the status change: ```login reviewer reaganmcknight```
+
+Once again, if we use the list command, we can see that the status of manuscript 1 has changed to published: ```list```
+
+We can also use the status command: ```status```
+
+Let us log out of the reviewer's account: ```logout```
+
+We have now successfully taken a manuscript through the publication process!
+
+
+#### Other functions
+Let us log in to reedconrad's account: ```login author reedconrad```
+
+Let us see the detailed list of the author's manuscripts: ```list```
+
+Let us try to retract a published manuscript: ```retract 1```
+
+The system should not allow this and tell us that the manuscript is either not ours or has already been published.
+
+Let us try to retract a manuscript under review: ```retract 3``` (answer yes)
+
+Let us see the detailed list of the author's manuscripts: ```list```
+
+Manuscript 3 should be gone.
+
+Let us try assigning a review from this author's account: ```assign 9 reaganmcknight```
+
+The system should say that only editors can assign reviews.
+
+Let us try to log in to another account without logging out: ```login editor azizansari```
+
+The system should tell us that we need to logout before logging in again.
+
+Let us log out of reedconrad's account: ```logout```
+
+Let us log in to reviewer reaganmcknight's account: ```login reviewer reaganmcknight```
+
+Let us have reaganmcknight resign: ```retire```
+
+If we try to use the list command, we see that we have been automatically logged out: ```list```
+
+Now, let us log in to editor merylstreep's account: ```login editor merylstreep```
+
+Let us list her manuscripts in detail: ```list```
+
+Let us try to assign manuscript 11 to our retired reviewer reaganmcknight: ```assign 11 reaganmcknight```
+
+The system should tell us that the reviewer has retired.
+
+Let us now logout: ```logout```
+
+If you wish, you may end the program by using the "quit" command: ```quit```
