@@ -35,7 +35,6 @@ while loop:
         elif textArray[1] == "author":
             print("Logging in author")
             success = loginAuthor(db, textArray[2])
-            # print(success)
             if success:
                 currentUser = textArray[2]
                 currentUserType = "Author"
@@ -65,7 +64,6 @@ while loop:
             if currentUserType == "Reviewer":
                 showReviewerStatusList(db, currentUser)
             elif currentUserType == "Author":
-                # print("showing author list")
                 showAuthorStatusList(db, currentUser)
             elif currentUserType == "Editor":
                 showEditorStatusList(db, currentUser)
@@ -138,7 +136,8 @@ while loop:
             currentUserType = None
         else:
             print("Sorry, but you are either not logged in or a reviewer.")
-            
+
+
     if (textArray[0] == "submit"):
         if currentUser is not None:
             if currentUserType == "Author":
@@ -155,6 +154,7 @@ while loop:
                 print("You must be an author to retract a manuscript.")
         else:
             print("Please log in to retract a manuscript.")
+
     # REGISTER
     if (textArray[0] == "register" and len(textArray) >= 5):
     	# if(len(textArray) == 8):

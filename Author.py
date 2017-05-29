@@ -11,6 +11,7 @@ from datetime import date, datetime, timedelta
 from pymongo.collection import ReturnDocument
 # {'Username': 'stevencobb', 'FirstName': 'Steven', 'LastName': 'Cobb', 'Email':'neque.Nullam@quis.edu', 'Affiliation': 'Cursus Corp.', 'Retired': false},
 
+
 def registerAuthor(db, input):
     # fill out all of the information
     if len(input) != 8:
@@ -43,9 +44,6 @@ def loginAuthor(db, username):
         print("Hello " + firstname + " " + lastname +"!")
         print("Your current address is: " + address)
         return True
-    else:
-        print("Sorry, but this username is invalid.  Please try again or register a new author.")
-        return False
 
 def showAuthorStatus(db, username):
 
