@@ -39,6 +39,7 @@ def showStatus(db, username):
         }
     ])
     print("Below, you will find the number of manuscripts in each phase \nof review (i.e status) that are under your guidance:")
+    print(' ')
 
     statusRows = ""
     count = 0
@@ -50,4 +51,26 @@ def showStatus(db, username):
     if (count == 0):
         print("You have no manuscripts!")
     else:
+        print(statusRows)
+
+    print(' ')
+    print("Below, you will also find a table showing the manuscript \nnumber corresponding to the status that manuscript is in:")
+    print(' ')
+
+    statusQuery = db.Manuscript.find({"PrimaryAuthorUsername" : "whileminasavage"}, { "_id": 1, "Status": 1 })
+
+    statusRows = ""
+    count = 0
+    statusList = list(statusQuery)
+    for query in statusList:
+        status = query.get(u'Status')
+        number = query.get(u'_id')
+        # print(query)
+        statusRows += "Manuscript Number: " + str(number) + "\t" + "Status: " + status + "\n"
+        count += 1
+    if (count == 0):
+        print("You have no manuscripts!")
+    else:
+        # print("".join(["{:<20}".format(col) for col in cursor.column_names]))
+        print("----------------------------")
         print(statusRows)

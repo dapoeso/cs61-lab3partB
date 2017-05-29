@@ -15,12 +15,12 @@ cursor = db.Author.find()
 #     print(document)
 loop = True
 while loop:
-    print()
+    print(' ')
     text = raw_input('Enter a command: ')
     textArray = text.split('|')
-    print()
+    print(' ')
     # print(textArray)
-    print()
+    print(' ')
 
     # REGISTER
     if (textArray[0] == "register"):
