@@ -1,7 +1,7 @@
 # CS61: Lab 3, Part B
 
 ### Setup
-Before running, please go to the CS61Lab3PartA folder and install the packages using: ```npm install```
+Before running, please go to the CS61Lab3PartA folder with ```cd CS61Lab3PartA``` and install the packages using: ```npm install```
 
 
 To set up the tables, in the CS61Lab3PartA folder, please start with the following command: ```node MMSetup.js```
@@ -10,7 +10,7 @@ To set up the tables, in the CS61Lab3PartA folder, please start with the followi
 This command will set up all of the files in our database and insert some basic data for testing.
 
 
-Now, please ```cd ..``` to go to the outer directory.
+Now, please enter ```cd ..``` to go to the outer directory for part B.
 
 
 ### Functionalities
