@@ -41,7 +41,7 @@ def registerReviewer(db, input):
     else:
         print("Setting up username")
     result = db.Reviewer.insert_one({"Username": username, "FirstName": fname, "LastName": lname, "Email": email, "Affiliation": affiliation, "Retired": retired})
-    print(result.inserted_id)
+    # print(result.inserted_id)
     test = db.Reviewer.find_one({"Username": username})
     # print(test)
     # add all of the RI codes that correspond to the reviewer
@@ -59,7 +59,7 @@ def insertRI(db, username, RI):
         print("Sorry, but this reviewer already has this RI Code.")
         return
     result = db.ReviewerInterests.insert_one({"ReviewerUsername": username, "RICode": RI})
-    print(result.inserted_id)
+    # print(result.inserted_id)
 
 def loginReviewer(db, username):
     reviewerExists = db.Reviewer.find_one({"Username": username})

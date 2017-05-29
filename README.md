@@ -167,3 +167,60 @@ REVIEW: This command allows a reviewer to submit a review about a specific manus
 
 
 ```review [recommendation] [manuscriptID] [appropriateness] [clarity] [methodology] [contributionToField]```
+
+
+### Testing
+
+NOTE 1: These tests assume that our node script MMSetup.js with sample data has been run on the database prior to starting.
+
+NOTE 2: The things in the parentheses are just what the program returned to us, but the password and IDs will likely vary depending on how many times you register a new user/your password choice.  We just included it as a reference.
+
+Please make sure you are in the cs61-lab3partB directory and run the following command to start the program:
+
+
+```python driver.py```
+
+
+#### Test register functions
+To test the register function, please register an editor, an author, and a reviewer.  Please note down the usernames that you use.
+
+
+Editor: ```register editor devinakumar Devina Kumar``` (username: devinakumar)
+
+Author: ```register author charlespalmer Charles Palmer charlespalmer@dartmouth.edu "1900 Hinman" "Dartmouth College"``` (username: charlespalmer)
+
+Reviewer: ```register reviewer damiapoeso Dami Apoeso damiapoeso@dartmouth.edu "Dartmouth CS" 1 2 3``` (username: damiapoeso)
+
+
+Now, using the usernames you just created, please try logging in and then logging out.
+
+```login editor devinakumar``` and then ```logout```
+
+```login author charlespalmer``` and then ```logout```
+
+```login reviewer damiapoeso``` and then ```logout```
+
+
+For each one, the screen should show a greeting with the first and last name (for authors, there should also be an address).  Please note that there are no manuscripts displayed because these users are not yet associated with any manuscripts.
+
+
+#### Make a manuscript
+To test the author submission, let us submit a new manuscript.
+
+Log in to charlespalmer's account: ```login author charlespalmer```
+
+Submit a manuscript: ```submit "Test Manuscript" "Dartmouth" 1 "Tina Fey" "Amy Poehler" "test.doc"```
+
+Check the status: ```status```
+
+Get more detailed information by using the list command: ```list```
+
+Try submitting the manuscript again: ```submit "Test Manuscript" "Dartmouth" 1 "Tina Fey" "Amy Poehler" "test.doc"```
+
+It shouldn't work, because authors cannot submit the same manuscript twice.
+
+Log out: ```logout```
+
+
+#### Publish a manuscript
+Now, to test the editor functions, let us go through the process of publishing a manuscript, from beginning to end.

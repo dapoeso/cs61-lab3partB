@@ -15,6 +15,8 @@ from pymongo.collection import ReturnDocument
 def registerAuthor(db, input):
     # fill out all of the information
     if len(input) != 8:
+        # print(len(input))
+        # print(input)
         print("The format for author registration was incorrect.  Please format the query as such:\n register author <username> <fname> <lname> <email> <address> <affiliation>")
         return
     username = input[2]
@@ -32,7 +34,7 @@ def registerAuthor(db, input):
     else:
         print("Setting up username")
     result = db.Author.insert_one({"Username": username, "FirstName": fname, "LastName": lname, "Email": email, "MailingAddress": address, "Affiliation": affiliation})
-    print(result.inserted_id)
+    # print(result.inserted_id)
     test = db.Author.find_one({"Username": username})
 
 def loginAuthor(db, username):

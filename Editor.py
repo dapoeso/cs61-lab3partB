@@ -29,9 +29,9 @@ def registerEditor(db, input):
         print("Sorry, but this username has been taken already.  Please try another one.")
         return
     result = db.Editor.insert_one({"Username": username, "FirstName": fname, "LastName": lname})
-    print(result.inserted_id)
+    # print(result.inserted_id)
     test = db.Editor.find_one({"Username": username})
-    print(test)
+    # print(test)
 
 def loginEditor(db, username):
     editorExists = db.Editor.find_one({"Username": username})
