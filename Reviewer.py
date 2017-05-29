@@ -8,6 +8,7 @@ import random
 import shlex
 import time
 from datetime import date, datetime, timedelta
+from pymongo.collection import ReturnDocument
 # {'Username': 'stevencobb', 'FirstName': 'Steven', 'LastName': 'Cobb', 'Email':'neque.Nullam@quis.edu', 'Affiliation': 'Cursus Corp.', 'Retired': false},
 
 def registerReviewer(db, input):
@@ -27,7 +28,7 @@ def registerReviewer(db, input):
         affiliation = input[6]
         retired = 0
     else:
-        print("Please format your query correctly.")
+        print("Please format your query correctly. You may have included too many or too few RI codes (1 minimum, 3 maximum).")
         return
     # print(input)
     print(fname, lname)
@@ -59,6 +60,27 @@ def insertRI(db, username, RI):
         return
     result = db.ReviewerInterests.insert_one({"ReviewerUsername": username, "RICode": RI})
     print(result.inserted_id)
+
+def loginReviewer(db, username):
+    reviewerExists = db.Reviewer.find_one({"Username": username})
+    if reviewerExists:
+        retired = reviewerExists.get(u'Retired')
+        if retired:
+            print("Sorry, but this reviewer has retired.")
+            return False
+        else:
+            firstname = reviewerExists.get(u'FirstName')
+            lastname = reviewerExists.get(u'LastName')
+            print("Hello " + firstname + " " + lastname +"!")
+            return True
+    else:
+        print("Sorry, but this username is invalid.  Please try again or register a new reviewer.")
+        return False
+
+def retireReviewer(db, username):
+    newReview = db.Reviewer.find_one_and_update({"Username": username}, {"$set": {"Retired": True}}, return_document=ReturnDocument.AFTER)
+    print(newReview)
+    print("Thank you for your service.")
 
 def showReviewerStatus(db, username):
 
@@ -178,28 +200,42 @@ def showReviewerStatusList(db, username):
         title = doc.get(u'Title')
         ID = str(doc.get(u'_id'))
         print("Manuscript ID " + ID + ": " + title + " (" + status + ")")
-        # print("_____________________________________")
-# def showAuthorStatus(db, username):
-#     # statusQuery = db.Manuscript.find({"PrimaryAuthorUsername" : "whileminasavage"}, { "_id": 1, "Status": 1 })
-#     statusQuery  = db.Manuscript.aggregate([
-#         { "$match" :
-#             { "PrimaryAuthorUsername" : username } },
-#         { "$group" : {
-#             "_id":"$Status", "count":{ "$sum": 1}
-#             }
-#         }
-#     ])
-#     print("Below, you will find the number of manuscripts in each phase \nof review (i.e status) that are under your guidance:")
-#
-#     statusRows = ""
-#     count = 0
-#     for query in statusQuery:
-#         print(query)
-#         status = query.get(u'_id')
-#         number = query.get(u'count')
-#         statusRows += str(number) + " " + status + ". "
-#         count += 1
-#     if (count == 0):
-#         print("You have no manuscripts!")
-#     else:
-#         print(statusRows)
+
+# review reject ID 1 2 3 4
+def reviewManuscript(db, username, input):
+    action = None
+    manuscript = None
+    appropriateness = None
+    clarity = None
+    methodology = None
+    fieldContribution = None
+    print(len(input))
+    if len(input) != 7:
+        print("This review must be formatted like this:\nreview <action> <manuscriptID> <appropriateness> <clarity> <methodology> <fieldContribution>")
+        return
+    if input[1] == 'accept' or input[1] == 'reject':
+        action = input[1]
+    else:
+        print("The action must be either accept or reject.")
+        return
+    manuscript = int(input[2])
+    appropriateness = int(input[3])
+    clarity = int(input[4])
+    methodology = int(input[5])
+    fieldContribution = int(input[6])
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # print(timestamp)
+    isAssigned = db.Review.find_one({"ManuscriptId": manuscript, "ReviewerUsername": username})
+    if isAssigned:
+        isUnderReview = db.Manuscript.find_one({"_id": manuscript, "Status": "Under Review"})
+        print(isUnderReview)
+        if isUnderReview:
+            print("doing the review!")
+            newReview = db.Review.find_one_and_update({"ManuscriptId": manuscript, "ReviewerUsername": username}, {"$set": {"Appropriateness": appropriateness, "Clarity": clarity, "Methodology": methodology, "ContributionField": fieldContribution, "Recommendation": action, "DateCompleted": timestamp}}, return_document=ReturnDocument.AFTER)
+            print(newReview)
+        else:
+            print("This manuscript is not under review at the moment.")
+            return
+    else:
+        print("You have not been asssigned to review this manuscript.")
+        return
