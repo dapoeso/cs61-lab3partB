@@ -19,8 +19,9 @@ loop = True
 while loop:
 
     textArray = shlex.split(raw_input('Enter a command: '))
-
-    if (textArray[0] == "login"):
+    if not textArray:
+        print("Unrecognizable command.  You may have pressed enter without typing anything.  You could also try logging in or registering.")
+    elif (textArray[0] == "login"):
         if len(textArray) != 3:
             print("Please login with the following format: login <userType> <username>")
         elif currentUser is not None:
@@ -48,7 +49,7 @@ while loop:
                 currentUserType = "Editor"
                 showEditorStatus(db, currentUser)
 
-    if (textArray[0] == "status"):
+    elif (textArray[0] == "status"):
         if currentUser is not None:
             if currentUserType == "Reviewer":
                 showReviewerStatus(db, currentUser)
@@ -59,7 +60,7 @@ while loop:
                 # print("showing editor status")
         else:
             print("Please log in to see status.")
-    if (textArray[0] == "list"):
+    elif (textArray[0] == "list"):
         if currentUser is not None:
             if currentUserType == "Reviewer":
                 showReviewerStatusList(db, currentUser)
@@ -72,7 +73,7 @@ while loop:
             print("Please log in to see status.")
 
 
-    if (textArray[0] == "assign"):
+    elif (textArray[0] == "assign"):
         if currentUser is not None:
             if currentUserType == "Editor":
                 assignManuscript(db, currentUser, textArray)
@@ -80,7 +81,7 @@ while loop:
                 print("You must be an editor to assign a manuscript.")
         else:
             print("Please log in to assign a manuscript.")
-    if (textArray[0] == "reject"):
+    elif (textArray[0] == "reject"):
         if currentUser is not None:
             if currentUserType == "Editor":
                 rejectManuscript(db, currentUser, textArray)
@@ -88,7 +89,7 @@ while loop:
                 print("You must be an editor to reject a manuscript.")
         else:
             print("Please log in to reject a manuscript.")
-    if (textArray[0] == "accept"):
+    elif (textArray[0] == "accept"):
         if currentUser is not None:
             if currentUserType == "Editor":
                 acceptManuscript(db, currentUser, textArray)
@@ -96,7 +97,7 @@ while loop:
                 print("You must be an editor to accept a manuscript.")
         else:
             print("Please log in to accept a manuscript.")
-    if (textArray[0] == "typeset"):
+    elif (textArray[0] == "typeset"):
         if currentUser is not None:
             if currentUserType == "Editor":
                 typesetManuscript(db, currentUser, textArray)
@@ -104,7 +105,7 @@ while loop:
                 print("You must be an editor to typeset a manuscript.")
         else:
             print("Please log in to typeset a manuscript.")
-    if (textArray[0] == "schedule"):
+    elif (textArray[0] == "schedule"):
         if currentUser is not None:
             if currentUserType == "Editor":
                 scheduleManuscript(db, currentUser, textArray)
@@ -112,7 +113,7 @@ while loop:
                 print("You must be an editor to schedule a manuscript.")
         else:
             print("Please log in to schedule a manuscript.")
-    if (textArray[0] == "publish"):
+    elif (textArray[0] == "publish"):
         if currentUser is not None:
             if currentUserType == "Editor":
                 publishJournal(db, textArray)
@@ -121,7 +122,7 @@ while loop:
         else:
             print("Please log in to publish a journal.")
 
-    if (textArray[0] == "review"):
+    elif (textArray[0] == "review"):
         if currentUser is not None:
             if currentUserType == "Reviewer":
                 reviewManuscript(db, currentUser, textArray)
@@ -129,7 +130,7 @@ while loop:
                 print("You must be a reviewer to review a manuscript.")
         else:
             print("Please log in to review a manuscript.")
-    if (textArray[0] == "retire"):
+    elif (textArray[0] == "retire"):
         if currentUser is not None and currentUserType == "Reviewer":
             retireReviewer(db, currentUser)
             currentUser = None
@@ -138,7 +139,7 @@ while loop:
             print("Sorry, but you are either not logged in or a reviewer.")
 
 
-    if (textArray[0] == "submit"):
+    elif (textArray[0] == "submit"):
         if currentUser is not None:
             if currentUserType == "Author":
                 submitManuscript(db, currentUser, textArray)
@@ -146,7 +147,7 @@ while loop:
                 print("You must be an author to submit a manuscript.")
         else:
             print("Please log in to submit a manuscript.")
-    if (textArray[0] == "retract"):
+    elif (textArray[0] == "retract"):
         if currentUser is not None:
             if currentUserType == "Author":
                 retractManuscript(db, currentUser, textArray)
@@ -156,7 +157,7 @@ while loop:
             print("Please log in to retract a manuscript.")
 
     # REGISTER
-    if (textArray[0] == "register" and len(textArray) >= 5):
+    elif (textArray[0] == "register" and len(textArray) >= 5):
     	# if(len(textArray) == 8):
     	if (textArray[1] == "author"):
             print("Registering Author . . .")
@@ -167,14 +168,14 @@ while loop:
     	if (textArray[1] == "reviewer"):
             print("Registering Reviewer . . .")
             registerReviewer(db, textArray)
-    if (textArray[0] == "logout"):
+    elif (textArray[0] == "logout"):
         if currentUser is not None:
             print("Logging out " + currentUser)
         currentUser = None
         currentUserType = None
-    if (textArray[0] == "exit"):
+    elif (textArray[0] == "exit"):
         print("Ok. See you later!")
         loop = False
-    if (textArray[0] == "quit"):
+    elif (textArray[0] == "quit"):
         print("Ok. See you later!")
         loop = False

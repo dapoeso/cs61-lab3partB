@@ -245,7 +245,7 @@ def reviewManuscript(db, username, input):
         isUnderReview = db.Manuscript.find_one({"_id": manuscript, "Status": "Under Review"})
         # print(isUnderReview)
         if isUnderReview:
-            print("doing the review!")
+            # print("doing the review!")
             newReview = db.Review.find_one_and_update({"ManuscriptId": manuscript, "ReviewerUsername": username}, {"$set": {"Appropriateness": appropriateness, "Clarity": clarity, "Methodology": methodology, "ContributionField": fieldContribution, "Recommendation": action, "DateCompleted": timestamp}}, return_document=ReturnDocument.AFTER)
             # print(newReview)
         else:

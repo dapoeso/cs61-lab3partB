@@ -325,7 +325,7 @@ Let us now try scheduling our manuscript: ```schedule 1 2017 1```
 
 The system should tell us that this would exceed the page limit.
 
-Let us now try scheduling our manuscript for a different issue: ``schedule 1 2017 3```
+Let us now try scheduling our manuscript for a different issue: ```schedule 1 2017 3```
 
 Once again, if we use the list command, we can see that the status has changed: ```list```
 

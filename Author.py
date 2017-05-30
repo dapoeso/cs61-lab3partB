@@ -202,7 +202,7 @@ def submitManuscript(db, username, input):
     manuscriptObject = {"_id": ID, "Title": title,"DateReceived": timestamp,"Status": "Received","RICode": RI,"PrimaryAuthorUsername": username, "EditorUsername": editor,"PagesOccupied": None,"StartingPage": None,"Order": None,"Document": document,"JournalIssueYear": None,"JournalIssuePeriod": None, "PrimaryAuthorAffiliation": affiliation, "DateAcceptReject": None}
     # print(manuscriptObject)
     if secondaryNumber != 0:
-        print("there is 1 primary author at least!")
+        # print("there is 1 primary author at least!")
         for x in range(secondaryNumber):
             secondaryAuthors.append(input[4+x])
         manuscriptObject = {"_id": ID, "Title": title,"DateReceived": timestamp,"Status": "Received","RICode": RI,"PrimaryAuthorUsername": username, "SecondaryAuthors": secondaryAuthors, "EditorUsername": editor,"PagesOccupied": None,"StartingPage": None,"Order": None,"Document": document,"JournalIssueYear": None,"JournalIssuePeriod": None, "PrimaryAuthorAffiliation": affiliation, "DateAcceptReject": None}
